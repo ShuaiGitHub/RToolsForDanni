@@ -5,6 +5,11 @@ firmName <-"/Volumes/MANSOUR/FIA project/Firm-2012-with-descriptions-Jun-22.xlsx
 firmData <-read.xlsx(firmName,colNames=T)
 findCNPJ <-function(x){
   idx <- which(firmData["CODIGO"]==x)
-    return(firmData[idx,2])
+    return(as.numeric(firmData[idx,2]))
 }
-CnpjCode<-data.frame(sapply(data[,1],findCNPJ))
+CnpjCode<-lapply(data[,1],findCNPJ)
+CnpjCode<-data.frame(t(CnpjCode))
+transformCnpj<-t(CnpjCode)
+transformCnpj<-as.numeric(transformCnpj)
+fullData<-data.frame(cbind(transformCnpj,data))
+write.xlsx(fullData,"/Volumes/MANSOUR/FIA project/2012-June-28-with-cnpj.xlsx")
